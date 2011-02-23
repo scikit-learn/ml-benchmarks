@@ -6,7 +6,7 @@ from datetime import datetime
 #
 #       .. Load dataset ..
 #
-from load import load_data, bench
+from misc import load_data, bench
 print 'Loading data ...'
 X, y, T = load_data()
 print 'Done, %s samples with %s features loaded into ' \
