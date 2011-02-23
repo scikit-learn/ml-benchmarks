@@ -33,4 +33,5 @@ Misc
 ----
 
 Author: Fabian Pedregosa <fabian.pedregosa@inria.fr>
+
 License: Simplified BSD

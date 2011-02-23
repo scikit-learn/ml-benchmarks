@@ -1,10 +1,7 @@
 """bench different LARS implementations"""
 
+import numpy as np
 from datetime import datetime
-from scikits.learn import linear_model
-from mlpy import Lasso as mlpy_lasso
-from mvpa.datasets import Dataset
-from mvpa.clfs import lars as mvpa_lars
 
 #
 #       .. Load dataset ..
@@ -20,6 +17,7 @@ def bench_skl():
 #
 #       .. scikits.learn ..
 #
+    from scikits.learn import linear_model
     start = datetime.now()
     skl_clf = linear_model.LassoLARS(alpha=0.)
     skl_clf.fit(X, y, normalize=False)
@@ -31,6 +29,7 @@ def bench_mlpy():
 #
 #       .. MLPy ..
 #
+    from mlpy import Lasso as mlpy_lasso
     start = datetime.now()
     mlpy_clf = mlpy_lasso(m=X.shape[1])
     mlpy_clf.learn(X, y)
@@ -43,6 +42,8 @@ def bench_pymvpa():
 #       .. PyMVPA ..
 #
 
+    from mvpa.datasets import Dataset
+    from mvpa.clfs import lars as mvpa_lars
     tstart = datetime.now()
     data = Dataset(samples=X, labels=y)
     mvpa_clf = mvpa_lars.LARS()
@@ -55,7 +56,20 @@ def bench_pymvpa():
 
 
 if __name__ == '__main__':
-    print __doc__ 
-    print 'scikits.learn: ', bench(bench_skl)
-    print 'MLPy: ', bench(bench_mlpy)
-    print 'PyMVPA: ', bench(bench_pymvpa)
+
+    # don't bother me with warnings
+    import warnings; warnings.simplefilter('ignore')
+    np.seterr(all='ignore')
+
+    print __doc__ + '\n'
+
+    res_skl = bench(bench_skl)
+    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
+
+    res_mlpy = bench(bench_mlpy)
+    print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
+
+    res_pymvpa = bench(bench_pymvpa)
+    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
+
+
