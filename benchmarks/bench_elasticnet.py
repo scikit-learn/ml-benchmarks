@@ -3,11 +3,8 @@
 #
 #       .. Imports ..
 #
+import numpy as np
 from datetime import datetime
-from scikits.learn import linear_model as skl_lm
-from mlpy import ElasticNet as mlpy_enet
-from mvpa.datasets import Dataset
-from mvpa.clfs import glmnet as mvpa_glmnet
 
 #
 #       .. Load dataset ..
@@ -23,6 +20,7 @@ def bench_skl():
 #
 #       .. scikits.learn ..
 #
+    from scikits.learn import linear_model as skl_lm
     start = datetime.now()
     skl_clf = skl_lm.ElasticNet(rho=0.5)
     skl_clf.fit(X, y)
@@ -34,6 +32,7 @@ def bench_mlpy():
 #
 #       .. MLPy ..
 #
+    from mlpy import ElasticNet as mlpy_enet
     start = datetime.now()
     mlpy_clf = mlpy_enet(tau=.5, mu=.5)
     mlpy_clf.learn(X, y)
@@ -45,8 +44,10 @@ def bench_pymvpa():
 #
 #       .. PyMVPA ..
 #
+    from mvpa.datasets import dataset_wizard
+    from mvpa.clfs import glmnet as mvpa_glmnet
     tstart = datetime.now()
-    data = Dataset(samples=X, labels=y)
+    data = dataset_wizard(X, y)
     clf = mvpa_glmnet.GLMNET_R(alpha=.5)
     clf.train(data)
     clf.predict(T)
@@ -54,7 +55,18 @@ def bench_pymvpa():
     
 
 if __name__ == '__main__':
-    print __doc__
-    print 'scikits.learn: ', bench(bench_skl)
-    print 'MLPy: ', bench(bench_mlpy)
-    print 'PyMVPA: ', bench(bench_pymvpa)
+
+    # don't bother me with warnings
+    import warnings; warnings.simplefilter('ignore')
+    np.seterr(all='ignore')
+
+    print __doc__ + '\n'
+
+    res_skl = bench(bench_skl)
+    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
+
+    res_mlpy = bench(bench_mlpy)
+    print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
+
+    res_pymvpa = bench(bench_pymvpa)
+    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
