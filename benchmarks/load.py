@@ -31,6 +31,10 @@ def bench(func, n=10):
     its output is expected to be of type datetime.datetime.
 
     All values are converted to seconds and returned in an array.
+
+    Returns
+    -------
+    D : array, size=n-2
     """
     try:
         time = [dtime_to_seconds(func()) for i in range(n)]
