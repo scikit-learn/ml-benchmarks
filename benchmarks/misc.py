@@ -39,7 +39,7 @@ def bench(func, n=10):
     assert n > 2
     try:
         time = [dtime_to_seconds(func()) for i in range(n)]
-        # remove the borders
+        # remove extremal values
         time.pop(np.argmax(time))
         time.pop(np.argmin(time))
     except Exception as detail:
