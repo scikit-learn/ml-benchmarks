@@ -45,5 +45,4 @@ def bench(func, n=10):
     except Exception as detail:
         print '%s error in function %s: ' % (repr(detail), func)
         time = []
-        return
     return np.array(time)
