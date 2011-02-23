@@ -81,19 +81,23 @@ if __name__ == '__main__':
 
     print __doc__ + '\n'
 
+
     res_shogun = bench(bench_shogun)
-    print 'Shogun: mean %s, std %s' % (res_shogun.mean(), res_shogun.std())
+    print 'Shogun: mean %s, std %s' % (
+        np.mean(res_shogun), np.std(res_shogun))
 
     res_mdp = bench(bench_mdp)
-    print 'MDP: mean %s, std %s' % (res_mdp.mean(), res_mdp.std())
+    print 'MDP: mean %s, std %s' % (
+        np.mean(res_mdp), np.std(res_mdp))
 
     res_skl = bench(bench_skl)
-    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
+    print 'scikits.learn: mean %s, std %s' % (
+        np.mean(res_skl), np.std(res_skl))
 
     res_mlpy = bench(bench_mlpy)
-    print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
+    print 'MLPy: mean %s, std %s' % (
+        np.mean(res_mlpy), np.std(res_mlpy))
 
     res_pybrain = bench(bench_pybrain)
-    print 'PyBrain: mean %s, std %s' % (res_pybrain.mean(), res_pybrain.std())
-
-
+    print 'Pybrain: mean %s, std %s' % (
+        np.mean(res_pybrain), np.std(res_pybrain))
