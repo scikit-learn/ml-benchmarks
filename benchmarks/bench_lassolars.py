@@ -42,10 +42,10 @@ def bench_pymvpa():
 #       .. PyMVPA ..
 #
 
-    from mvpa.datasets import Dataset
+    from mvpa.datasets import dataset_wizard
     from mvpa.clfs import lars as mvpa_lars
     tstart = datetime.now()
-    data = Dataset(samples=X, labels=y)
+    data = dataset_wizard(X, y)
     mvpa_clf = mvpa_lars.LARS()
     mvpa_clf.train(data)
 #    BROKEN
