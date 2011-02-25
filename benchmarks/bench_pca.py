@@ -1,4 +1,4 @@
-"""K-means clustering"""
+"""PCA benchmarks"""
 
 import numpy as np
 from datetime import datetime
@@ -40,9 +40,10 @@ def bench_mdp():
 #
 #       .. MDP ..
 #
-    import mdp
+    from mdp.nodes import PCANode
     start = datetime.now()
-    mdp.pca(X, output_dim=n_components)
+    mdp_clf = PCANode(output_dim=n_components)
+    mdp_clf.train(X)
     return datetime.now() - start
 
 
@@ -50,12 +51,10 @@ def bench_pymvpa():
 #
 #       .. PyMVPA ..
 #
-    from mvpa.mappers.pca import PCAMapper as MVPA_PCA
+    from mvpa.mappers.mdp_adaptor import PCAMapper as MVPA_PCA
     from mvpa.datasets import dataset_wizard
     start = datetime.now()
-    clf = MVPA_PCA()
-    print 'Warning, PyMVPA does not accept keyword to set number ' \
-          'of components'
+    clf = MVPA_PCA(output_dim=n_components)
     data = dataset_wizard(samples=X)
     clf.train(data)
     return datetime.now() - start

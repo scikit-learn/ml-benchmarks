@@ -51,7 +51,7 @@ def bench_skl():
 #
     from scikits.learn import neighbors
     start = datetime.now()
-    clf = neighbors.NeighborsClassifier(n_neighbors=n_neighbors)
+    clf = neighbors.NeighborsClassifier(n_neighbors=n_neighbors, algorithm='brute_inplace')
     clf.fit(X, y)
     clf.predict(T)
     return datetime.now() - start
@@ -91,17 +91,17 @@ if __name__ == '__main__':
 
     print __doc__ + '\n'
 
-    res_shogun = bench(bench_shogun)
-    print 'Shogun: mean %s, std %s' % (res_shogun.mean(), res_shogun.std())
+    # res_shogun = bench(bench_shogun)
+    # print 'Shogun: mean %s, std %s' % (res_shogun.mean(), res_shogun.std())
 
-    res_mdp = bench(bench_mdp)
-    print 'MDP: mean %s, std %s' % (res_mdp.mean(), res_mdp.std())
+    # res_mdp = bench(bench_mdp)
+    # print 'MDP: mean %s, std %s' % (res_mdp.mean(), res_mdp.std())
 
     res_skl = bench(bench_skl)
     print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
 
-    res_mlpy = bench(bench_mlpy)
-    print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
+    # res_mlpy = bench(bench_mlpy)
+    # print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
 
-    res_pymvpa = bench(bench_pymvpa)
-    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
+    # res_pymvpa = bench(bench_pymvpa)
+    # print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
