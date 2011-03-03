@@ -59,6 +59,15 @@ def bench_pymvpa():
     clf.train(data)
     return datetime.now() - start
 
+def bench_milk():
+#
+#       .. milk ..
+#
+    from milk.unsupervised import pca as milk_pca
+    start = datetime.now()
+    _ = milk_pca(X)
+    return datetime.now() - start
+
 
 if __name__ == '__main__':
 
@@ -79,6 +88,10 @@ if __name__ == '__main__':
     res_pybrain = bench(bench_pybrain)
     print 'Pybrain: mean %s, std %s' % (
         np.mean(res_pybrain), np.std(res_pybrain))
+
+    res_milk = bench(bench_milk)
+    print 'milk: mean %s, std %s' % (
+        np.mean(res_milk), np.std(res_milk))
 
     res_pymvpa = bench(bench_pymvpa)
     print 'PyMVPA: mean %s, std %s' % (

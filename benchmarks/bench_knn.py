@@ -83,6 +83,18 @@ def bench_pymvpa():
     return datetime.now() - start
 
 
+def bench_milk():
+#
+#       .. milk ..
+#
+    from milk.supervised.knn import kNN
+    start = datetime.now()
+    learner = kNN(n_neighbors)
+    model = learner.train(X, y)
+    _ = map(model.apply, T)
+    return datetime.now() - start
+
+
 if __name__ == '__main__':
 
     # don't bother me with warnings
@@ -102,6 +114,9 @@ if __name__ == '__main__':
 
     # res_mlpy = bench(bench_mlpy)
     # print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
+
+    res_milk = bench(bench_milk)
+    print 'milk: mean %s, std %s' % (res_milk.mean(), res_milk.std())
 
     # res_pymvpa = bench(bench_pymvpa)
     # print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())

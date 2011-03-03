@@ -71,6 +71,16 @@ def bench_mdp():
     clf.label(X)
     return datetime.now() - start
 
+def bench_milk():
+#
+#       .. milk ..
+#
+    from milk.unsupervised import kmeans as milk_kmeans
+    start = datetime.now()
+    _ = milk_kmeans(X, n_components)
+    return datetime.now() - start
+
+
 
 
 if __name__ == '__main__':
@@ -101,3 +111,7 @@ if __name__ == '__main__':
     res_pybrain = bench(bench_pybrain)
     print 'Pybrain: mean %s, std %s' % (
         np.mean(res_pybrain), np.std(res_pybrain))
+
+    res_milk = bench(bench_milk)
+    print 'milk: mean %s, std %s' % (
+        np.mean(res_milk), np.std(res_milk))

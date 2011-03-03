@@ -102,6 +102,18 @@ def bench_mdp():
     return datetime.now() - start
 
 
+def bench_milk():
+#
+#       .. milk ..
+#
+    from milk.supervised import svm
+    start = datetime.now()
+    learner = svm.svm_raw(kernel=svm.rbf_kernel(sigma=1.), C=1.)
+    model = learner.train(X,y)
+    predictions = map(model.apply, T)
+    return datetime.now() - start
+
+
 if __name__ == '__main__':
     # don't bother me with warnings
     import warnings; warnings.simplefilter('ignore')
@@ -132,3 +144,7 @@ if __name__ == '__main__':
     res_pybrain = bench(bench_pybrain)
     print 'Pybrain: mean %s, std %s' % (
         np.mean(res_pybrain), np.std(res_pybrain))
+
+    res_milk = bench(bench_milk)
+    print 'milk: mean %s, std %s' % (
+        np.mean(res_milk), np.std(res_milk))
