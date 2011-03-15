@@ -1,4 +1,3 @@
-
 Benchmarks for various machine learning packages
 ==================================================
 
@@ -17,6 +16,17 @@ To execute a benchmark, just type from the prompt::
 
 and you will se as output the mean and std deviation for the timing of
 running the benchmark 10 times with its extreme values removed.
+
+Results
+----------
+
+Some result of running these benchmarks on different boxes can be found on:
+
+  - http://fseoane.net/ml-benchmarks/
+  - http://packages.python.org/milk/benchmarks.html
+
+They differ because they are run with different versions of the packages, and different
+compilation settings (e.g. linear algebra packs).
 
 References
 ----------
