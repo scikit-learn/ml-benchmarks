@@ -6,18 +6,10 @@
 import numpy as np
 from datetime import datetime
 
-#
-#       .. Load dataset ..
-#
-from misc import load_data, bench
-print 'Loading data ...'
-X, y, T = load_data()
-print 'Done, %s samples with %s features loaded into ' \
-      'memory' % X.shape
 n_neighbors = 9
 
 
-def bench_shogun():
+def bench_shogun(X, y, T, valid):
 #
 #       .. Shogun ..
 #
@@ -29,11 +21,13 @@ def bench_shogun():
     test_feat = Features.RealFeatures(T.T)
     knn = Classifier.KNN(n_neighbors, distance, labels)
     knn.train()
-    knn.classify(test_feat).get_labels()
-    return datetime.now() - start
+    score = np.mean(
+        knn.classify(test_feat).get_labels()
+        == valid)
+    return score, datetime.now() - start
 
 
-def bench_mdp():
+def bench_mdp(X, y, T, valid):
 #
 #       .. MDP ..
 #
@@ -41,11 +35,11 @@ def bench_mdp():
     start = datetime.now()
     knn_mdp = KNNClassifier(k=n_neighbors)
     knn_mdp.train(X, y)
-    knn_mdp.label(T)
-    return datetime.now() - start
+    score = np.mean(knn_mdp.label(T) == valid)
+    return score, datetime.now() - start
 
 
-def bench_skl():
+def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
@@ -53,11 +47,11 @@ def bench_skl():
     start = datetime.now()
     clf = neighbors.NeighborsClassifier(n_neighbors=n_neighbors, algorithm='brute_inplace')
     clf.fit(X, y)
-    clf.predict(T)
-    return datetime.now() - start
+    score = np.mean(clf.predict(T) == valid)
+    return score, datetime.now() - start
 
 
-def bench_mlpy():
+def bench_mlpy(X, y, T, valid):
 #
 #       .. MLPy ..
 #
@@ -65,11 +59,11 @@ def bench_mlpy():
     start = datetime.now()
     mlpy_clf = mlpy_Knn(n_neighbors)
     mlpy_clf.compute(X, y)
-    mlpy_clf.predict(T)
-    return datetime.now() - start
+    score = np.mean(mlpy_clf.predict(T) == valid)
+    return score, datetime.now() - start
 
 
-def bench_pymvpa():
+def bench_pymvpa(X, y, T, valid):
 #
 #       .. PyMVPA ..
 #
@@ -79,11 +73,11 @@ def bench_pymvpa():
     data = dataset_wizard(X, y)
     mvpa_clf = mvpa_knn.kNN(k=n_neighbors)
     mvpa_clf.train(data)
-    mvpa_clf.predict(T)
-    return datetime.now() - start
+    score = np.mean(mvpa_clf.predict(T) == valid)
+    return score, datetime.now() - start
 
 
-def bench_milk():
+def bench_milk(X, y, T, valid):
 #
 #       .. milk ..
 #
@@ -91,32 +85,44 @@ def bench_milk():
     start = datetime.now()
     learner = kNN(n_neighbors)
     model = learner.train(X, y)
-    _ = map(model.apply, T)
-    return datetime.now() - start
+    score = np.mean(map(model.apply, T) == valid)
+    return score, datetime.now() - start
 
 
 if __name__ == '__main__':
+    import sys, misc
 
     # don't bother me with warnings
     import warnings; warnings.simplefilter('ignore')
     np.seterr(all='ignore')
 
     print __doc__ + '\n'
+    if not len(sys.argv) == 2:
+        print misc.USAGE % __file__
+        sys.exit(-1)
+    else:
+        dataset = sys.argv[1]
 
-    res_shogun = bench(bench_shogun)
-    print 'Shogun: mean %s, std %s' % (res_shogun.mean(), res_shogun.std())
+    print 'Loading data ...'
+    data = misc.load_data(dataset)
 
-    res_mdp = bench(bench_mdp)
-    print 'MDP: mean %s, std %s' % (res_mdp.mean(), res_mdp.std())
+    print 'Done, %s samples with %s features loaded into ' \
+      'memory' % data[0].shape
 
-    res_skl = bench(bench_skl)
-    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
+    res_shogun = misc.bench(bench_shogun, data)
+    print 'Shogun: mean %.2f, std %.2f\n' % (res_shogun.mean(), res_shogun.std())
 
-    res_mlpy = bench(bench_mlpy)
-    print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
+    res_mdp = misc.bench(bench_mdp, data)
+    print 'MDP: mean %.2f, std %.2f\n' % (res_mdp.mean(), res_mdp.std())
 
-    res_milk = bench(bench_milk)
-    print 'milk: mean %s, std %s' % (res_milk.mean(), res_milk.std())
+    res_skl = misc.bench(bench_skl, data)
+    print 'scikits.learn: mean %.2f, std %.2f\n' % (res_skl.mean(), res_skl.std())
 
-    res_pymvpa = bench(bench_pymvpa)
-    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
+    res_mlpy = misc.bench(bench_mlpy, data)
+    print 'MLPy: mean %.2f, std %.2f\n' % (res_mlpy.mean(), res_mlpy.std())
+
+    res_milk = misc.bench(bench_milk, data)
+    print 'milk: mean %.2f, std %.2f\n' % (res_milk.mean(), res_milk.std())
+
+    res_pymvpa = misc.bench(bench_pymvpa, data)
+    print 'PyMVPA: mean %.2f, std %.2f\n' % (res_pymvpa.mean(), res_pymvpa.std())

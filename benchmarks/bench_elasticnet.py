@@ -6,17 +6,8 @@
 import numpy as np
 from datetime import datetime
 
-#
-#       .. Load dataset ..
-#
-from misc import load_data, bench
-print 'Loading data ...'
-X, y, T = load_data()
-print 'Done, %s samples with %s features loaded into ' \
-      'memory' % X.shape
 
-
-def bench_skl():
+def bench_skl(X, y, T):
 #
 #       .. scikits.learn ..
 #
@@ -28,7 +19,7 @@ def bench_skl():
     return datetime.now() - start
 
 
-def bench_mlpy():
+def bench_mlpy(X, y, T):
 #
 #       .. MLPy ..
 #
@@ -40,7 +31,7 @@ def bench_mlpy():
     return datetime.now() - start
 
 
-def bench_pymvpa():
+def bench_pymvpa(X, y, T):
 #
 #       .. PyMVPA ..
 #
@@ -52,9 +43,11 @@ def bench_pymvpa():
     clf.train(data)
     clf.predict(T)
     return datetime.now() - tstart
-    
+
 
 if __name__ == '__main__':
+
+    import sys, misc
 
     # don't bother me with warnings
     import warnings; warnings.simplefilter('ignore')
@@ -62,11 +55,22 @@ if __name__ == '__main__':
 
     print __doc__ + '\n'
 
-    res_skl = bench(bench_skl)
+    if not len(sys.argv) == 2:
+        print misc.USAGE
+        sys.exit(-1)
+    else:
+        dataset = sys.argv[1]
+
+    print 'Loading data ...'
+    data = misc.load_data(dataset)
+    print 'Done, %s samples with %s features loaded into ' \
+          'memory' % data[0].shape
+
+    res_skl = misc.bench(bench_skl, data)
     print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
 
-    res_mlpy = bench(bench_mlpy)
+    res_mlpy = misc.bench(bench_mlpy, data)
     print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
 
-    res_pymvpa = bench(bench_pymvpa)
+    res_pymvpa = misc.bench(bench_pymvpa, data)
     print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
