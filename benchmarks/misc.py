@@ -51,19 +51,19 @@ def bench(func, data, n=10):
     D : array, size=n-2
     """
     assert n > 2
+    score = np.inf
     try:
         time = []
         for i in range(n):
-            t, s = func(*data)
-            time.append(dtime_to_seconds(s))
-        print 'Score: %s' % t
+            score, t = func(*data)
+            time.append(dtime_to_seconds(t))
         # remove extremal values
         time.pop(np.argmax(time))
         time.pop(np.argmin(time))
     except Exception as detail:
         print '%s error in function %s: ' % (repr(detail), func)
         time = []
-    return np.array(time)
+    return score, np.array(time)
 
 USAGE = """usage: python %s dataset
 

@@ -1,20 +1,33 @@
-"""K-means clustering"""
+"""K-means clustering
+
+Score is the inertia
+"""
 
 import numpy as np
 from datetime import datetime
 
-#
-#       .. Load dataset ..
-#
-from misc import load_data, bench
-print 'Loading data ...'
-X, y, T = load_data()
-print 'Done, %s samples with %s features loaded into ' \
-      'memory' % X.shape
 n_components = 9
 
+def inertia(X, centers):
+    # helper to compute inertia
+    n_samples = X.shape[0]
+    k = centers.shape[0]
+    from scikits.learn import metrics
+    distances = metrics.euclidean_distances(centers, X, None,
+                                            squared=True)
+    z = np.empty(n_samples, dtype=np.int)
+    z.fill(-1)
+    mindist = np.empty(n_samples)
+    mindist.fill(np.infty)
+    for q in range(k):
+        dist = np.sum((X - centers[q]) ** 2, axis=1)
+        z[dist < mindist] = q
+        mindist = np.minimum(dist, mindist)
+    inertia = mindist.sum()
+    return inertia
 
-def bench_shogun():
+
+def bench_shogun(X, y, T, valid):
 #
 #       .. Shogun ..
 #
@@ -26,10 +39,10 @@ def bench_shogun():
     distance=EuclidianDistance(feat, feat)
     clf=KMeans(n_components, distance)
     clf.train()
-    return datetime.now() - start
+    return inertia(X, clf.get_cluster_centers()), datetime.now() - start
 
 
-def bench_skl():
+def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
@@ -37,20 +50,20 @@ def bench_skl():
     start = datetime.now()
     clf = skl_cluster.KMeans(k=n_components, n_init=1)
     clf.fit(X)
-    return datetime.now() - start
+    return inertia(X, clf.cluster_centers_), datetime.now() - start
 
 
-def bench_pybrain():
+def bench_pybrain(X, y, T, valid):
 #
 #       .. pybrain ..
 #
     from pybrain.auxiliary import kmeans as pybrain_kmeans
     start = datetime.now()
     pybrain_kmeans.kmeanspp(X, n_components)
-    return datetime.now() - start
+    return np.inf, datetime.now() - start
 
 
-def bench_mlpy():
+def bench_mlpy(X, y, T, valid):
 #
 #       .. MLPy ..
 #
@@ -58,10 +71,10 @@ def bench_mlpy():
     start = datetime.now()
     clf = mlpy_Kmeans(n_components)
     clf.compute(X)
-    return datetime.now() - start
+    return inertia(X, clf.means), datetime.now() - start
 
 
-def bench_mdp():
+def bench_mdp(X, y, T, valid):
 #
 #       .. MDP ..
 #
@@ -69,49 +82,65 @@ def bench_mdp():
     start = datetime.now()
     clf = mdp_KMeans(n_components)
     clf.label(X)
-    return datetime.now() - start
+    return inertia(X, clf._centroids), datetime.now() - start
 
-def bench_milk():
+
+def bench_milk(X, y, T, valid):
 #
 #       .. milk ..
 #
     from milk.unsupervised import kmeans as milk_kmeans
     start = datetime.now()
-    _ = milk_kmeans(X, n_components)
-    return datetime.now() - start
-
-
+    _, centroids = milk_kmeans(X, n_components)
+    return inertia(X, centroids), datetime.now() - start
 
 
 if __name__ == '__main__':
+    import sys, misc
 
     # don't bother me with warnings
     import warnings; warnings.simplefilter('ignore')
     np.seterr(all='ignore')
 
     print __doc__ + '\n'
+    if not len(sys.argv) == 2:
+        print misc.USAGE % __file__
+        sys.exit(-1)
+    else:
+        dataset = sys.argv[1]
 
+    print 'Loading data ...'
+    data = misc.load_data(dataset)
 
-    res_shogun = bench(bench_shogun)
-    print 'Shogun: mean %s, std %s' % (
+    print 'Done, %s samples with %s features loaded into ' \
+      'memory' % data[0].shape
+
+    score, res_shogun = misc.bench(bench_shogun, data)
+    print 'Shogun: mean %.2f, std %.2f' % (
         np.mean(res_shogun), np.std(res_shogun))
+    print 'Score: %2f\n' % score
 
-    res_mdp = bench(bench_mdp)
-    print 'MDP: mean %s, std %s' % (
+    score, res_mdp = misc.bench(bench_mdp, data)
+    print 'MDP: mean %.2f, std %.2f' % (
         np.mean(res_mdp), np.std(res_mdp))
+    print 'Score: %2f\n' % score
 
-    res_skl = bench(bench_skl)
-    print 'scikits.learn: mean %s, std %s' % (
+    score, res_skl = misc.bench(bench_skl, data)
+    print 'scikits.learn: mean %.2f, std %.2f' % (
         np.mean(res_skl), np.std(res_skl))
+    print 'Score: %2f\n' % score
 
-    res_mlpy = bench(bench_mlpy)
-    print 'MLPy: mean %s, std %s' % (
+    score, res_mlpy = misc.bench(bench_mlpy, data)
+    print 'MLPy: mean %.2f, std %.2f' % (
         np.mean(res_mlpy), np.std(res_mlpy))
+    print 'Score: %2f\n' % score
 
-    res_pybrain = bench(bench_pybrain)
-    print 'Pybrain: mean %s, std %s' % (
+    score, res_pybrain = misc.bench(bench_pybrain, data)
+    print 'Pybrain: mean %.2f, std %.2f' % (
         np.mean(res_pybrain), np.std(res_pybrain))
+    print 'Score: %2f\n' % score
 
-    res_milk = bench(bench_milk)
-    print 'milk: mean %s, std %s' % (
+    score, res_milk = misc.bench(bench_milk, data)
+    print 'milk: mean %.2f, std %.2f' % (
         np.mean(res_milk), np.std(res_milk))
+    print 'Score: %2f\n' % score
