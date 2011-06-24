@@ -12,7 +12,8 @@ def bench_skl(X, y, T, valid):
     start = datetime.now()
     skl_clf = linear_model.LassoLARS(alpha=0.)
     skl_clf.fit(X, y, normalize=False)
-    mse = np.linalg.norm(skl_clf.predict(T), 2)**2
+    mse = np.linalg.norm(
+        skl_clf.predict(T) - valid, 2)**2
     return mse, datetime.now() - start
 
 
@@ -24,7 +25,8 @@ def bench_mlpy(X, y, T, valid):
     start = datetime.now()
     mlpy_clf = mlpy_lasso(m=X.shape[1])
     mlpy_clf.learn(X, y)
-    mse = np.linalg.norm(mlpy_clf.pred(T), 2)**2
+    mse = np.linalg.norm(
+        mlpy_clf.pred(T) - valid, 2)**2
     return mse, datetime.now() - start
 
 

@@ -7,7 +7,7 @@ import numpy as np
 from datetime import datetime
 
 
-def bench_skl(X, y, T):
+def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
@@ -15,11 +15,12 @@ def bench_skl(X, y, T):
     start = datetime.now()
     skl_clf = skl_lm.ElasticNet(rho=0.5)
     skl_clf.fit(X, y)
-    skl_clf.predict(T)
-    return datetime.now() - start
+    mse = np.linalg.norm(
+        skl_clf.predict(T) - valid, 2) ** 2
+    return mse, datetime.now() - start
 
 
-def bench_mlpy(X, y, T):
+def bench_mlpy(X, y, T, valid):
 #
 #       .. MLPy ..
 #
@@ -27,11 +28,12 @@ def bench_mlpy(X, y, T):
     start = datetime.now()
     mlpy_clf = mlpy_enet(tau=.5, mu=.5)
     mlpy_clf.learn(X, y)
-    mlpy_clf.pred(T)
-    return datetime.now() - start
+    mse = np.linalg.norm(
+        mlpy_clf.pred(T) - valid, 2) ** 2
+    return mse, datetime.now() - start
 
 
-def bench_pymvpa(X, y, T):
+def bench_pymvpa(X, y, T, valid):
 #
 #       .. PyMVPA ..
 #
@@ -41,8 +43,9 @@ def bench_pymvpa(X, y, T):
     data = dataset_wizard(X, y)
     clf = mvpa_glmnet.GLMNET_R(alpha=.5)
     clf.train(data)
-    clf.predict(T)
-    return datetime.now() - tstart
+    mse = np.linalg.norm(
+        clf.predict(T) - valid, 2) ** 2
+    return mse, datetime.now() - tstart
 
 
 if __name__ == '__main__':
@@ -66,11 +69,11 @@ if __name__ == '__main__':
     print 'Done, %s samples with %s features loaded into ' \
           'memory' % data[0].shape
 
-    res_skl = misc.bench(bench_skl, data)
-    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
+##    score, res_skl = misc.bench(bench_skl, data)
+##    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
 
-    res_mlpy = misc.bench(bench_mlpy, data)
+    score, res_mlpy = misc.bench(bench_mlpy, data)
     print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
 
-    res_pymvpa = misc.bench(bench_pymvpa, data)
-    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
+##    score, res_pymvpa = misc.bench(bench_pymvpa, data)
+##    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
