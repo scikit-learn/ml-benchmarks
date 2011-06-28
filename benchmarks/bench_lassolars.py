@@ -45,9 +45,6 @@ def bench_pymvpa(X, y, T, valid):
 #    mvpa_pred = mvpa_clf.predict(X)
     return None, datetime.now() - tstart
 
-
-
-
 if __name__ == '__main__':
     import sys, misc
 

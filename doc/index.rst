@@ -29,7 +29,7 @@ We used the latest released version as of June 2011:
   - scikits.learn 0.8
   - MDP 3.1
   - MLPy 2.2.2
-  - PyMVPA 0.6.0.dev
+  - PyMVPA 0.6.0~rc3
   - Shogun 0.10.0
 
 I ran it on an Intel(R) Core(TM)2 CPU @ 1.86GHz.
@@ -61,25 +61,23 @@ Support Vector Machines
 We used several Support Vector Machine (RBF kernel) implementations. Numbers
 represent the time in seconds (lower is better) it took to train the dataset
 and perform prediction on a test dataset. In the plot, results are normalized
-so that the fastest method has value 1.0.
-
+to have the fastest method at 1.0.
 
 
 .. table:: Results in scikits.learn ml-benchmarks
 
-     ============         =======           ======     ====     =======         ========    =============         ========
-          Dataset          PyMVPA           Shogun      MDP     Pybrain             MLPy    scikits.learn             Milk
-     ============         =======           ======     ====     =======         ========    =============         ========
-          Madelon           12.89             6.03       --          --            10.88             6.23             4.90
-          Arcene             1.37             0.42       --          --             1.75             0.41         **0.34**
-     ============         =======           ======     ====     =======         ========    =============         ========
+     ============      =======       ======     ====     =======     ========    =============      ========
+          Dataset       PyMVPA       Shogun      MDP     Pybrain         MLPy    scikits.learn          Milk
+     ============      =======       ======     ====     =======     ========    =============      ========
+          Madelon        12.89         6.03       --          --        10.88             6.23          4.90
+          Arcene          1.37         0.42       --          --         1.75             0.41      **0.34**
+     ============      =======       ======     ====     =======     ========    =============      ========
 
 
 
 .. figure:: bench_svm.png
    :scale: 60%
    :align: center
-
 
 The score by these calssfifiers in in a test dataset is.
 
@@ -102,9 +100,12 @@ The score by these calssfifiers in in a test dataset is.
 K-means
 -------
 
-bla bla bla. NC = not converging.
+We run the k-means algorithm on both Madelon and Arcene dataset. To make sure
+the methods are converging, we show in the second table the inertia of all
+methods, which are mostly equivalent.
 
-.. table:: Results in scikits.learn ml-benchmarks
+
+.. table:: Timing for k-Means algorithm
 
      ============         =======       ======     ====     =======         ========    =============         ========
           Dataset         PyMVPA        Shogun      MDP     Pybrain             MLPy    scikits.learn             milk
@@ -113,6 +114,8 @@ bla bla bla. NC = not converging.
            Arcene              --           --       --          --             0.81             1.77          **1.0**
      ============         =======       ======     ====     =======         ========    =============         ========
 
+
+NC = Not Converging after one hour iteration.
 
 .. figure:: bench_kmeans.png
    :scale: 60%
@@ -123,18 +126,18 @@ The following table shows the inertia, criterion that the k-means algorithm mini
 
 .. table:: Inertia
 
-     ============         =======           ======     =============     =======     =============    =============     ==============
-          Inertia          PyMVPA           Shogun               MDP     Pybrain              MLPy    scikits.learn               Milk
-     ============         =======           ======     =============     =======     =============    =============     ==============
-          Madelon              --               --                --          --       739171883.6      745421891.3                 --
-           Arcene              --               --     1403820558.52          --     1429740165.89      745421891.3      1451970835.28
-     ============         =======           ======     =============     =======     =============    =============     ==============
+     ============         =======    ======     =============     =======     =============    =============     ==============
+          Dataset          PyMVPA    Shogun               MDP     Pybrain              MLPy    scikits.learn               Milk
+     ============         =======    ======     =============     =======     =============    =============     ==============
+          Madelon              --        --                --          --       739171883.6      745421891.3                 --
+           Arcene              --        --     1403820558.52          --     1429740165.89      745421891.3      1451970835.28
+     ============         =======    ======     =============     =======     =============    =============     ==============
 
 
 Elastic Net
 -----------
 
-Bla bla bla bla
+We solve the elastic net using a coordinate descent algorithm on both Madelon and Arcene dataset.
 
 
 .. table:: Results in scikits.learn ml-benchmarks
@@ -155,12 +158,63 @@ Bla bla bla bla
 Lasso (LARS algorithm)
 ----------------------
 
+We solve the Lasso model by Least Angle Regression (LARS) algorithm. MLPy and
+scikits.learn use a pure Python implementation, while PyMVPA uses bindings to
+R code.
 
-     ============         =======  =============     =======     =============    =============     ==============
-              MSE          PyMVPA            MDP     Pybrain              MLPy    scikits.learn               Milk
-     ============         =======  =============     =======     =============    =============     ==============
-          Madelon              --             --          --       739171883.6      745421891.3                 --
-           Arcene              --  1403820558.52          --     1429740165.89      745421891.3      1451970835.28
-     ============         =======  =============     =======     =============    =============     ==============
+We also show the Means Squared error as a sanity check for the model. Note
+that some NaN arise, probably due to collinearity in the data.
 
-TODO
+
+.. table:: Timing
+
+     ============         =======  =============    =============
+          Dataset          PyMVPA           MLPy    scikits.learn
+     ============         =======  =============    =============
+          Madelon           33.45           72.2             0.88
+           Arcene              NW           3.75      745421891.3
+     ============         =======  =============    =============
+
+
+.. table:: Means Squared Error on a test dataset.
+
+     ============  =======  =============    =============
+          Dataset   PyMVPA           MLPy    scikits.learn
+     ============  =======  =============    =============
+          Madelon      NaN         682.32           680.91
+           Arcene       NW            NaN            66.61
+     ============  =======  =============    =============
+
+
+Principal Component Analysis
+----------------------------
+
+We run principal component analysis on both datasets. In the libraries that
+support it (scikit-learn, MDP, PyMVPA), we number of components in the
+projection to 9.
+
+.. table:: Timing PCA
+
+     ============     =======   ====    =======    ========    =============    ========
+          Dataset      PyMVPA    MDP    Pybrain        MLPy    scikits.learn        milk
+     ============     =======   ====    =======    ========    =============    ========
+          Madelon        0.48   0.50       6.51        0.79             1.36        2.66
+           Arcene          --     --         --        0.81             1.77     **1.0**
+     ============     =======   ====    =======    ========    =============    ========
+
+
+.. table:: explained variance
+
+     ============     =======   ========     ========    ========    =============         =========
+          Dataset      PyMVPA        MDP      Pybrain        MLPy    scikits.learn              milk
+     ============     =======   ========     ========    ========    =============         =========
+          Madelon          --   136705.5     228941.0        0.79         135788.2         455715.83
+           Arcene          --         --           --        0.81             1.77          **1.0**
+     ============     =======   ========     ========    ========    =============         =========
+
+
+Misc
+----
+
+Author : Fabian Pedregosa
+License : Simplified BSD
