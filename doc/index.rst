@@ -13,7 +13,7 @@ exposed in Python: `MLPy <http://mlpy.fbk.eu/>`_, `PyBrain
 <http://pybrain.org/>`_, `PyMVPA <http://pymvpa.org>`_, `MDP
 <http://mdp-toolkit.sourceforge.net/>`_, `Shogun <http://shogun-toolbox.org>`_
 and `MiLK <http://luispedro.org/software/milk>`_. Code for running the
-benchmarks can be retrieved from http://github.com/scikit-learn.
+benchmarks can be retrieved `it's github repository <http://github.com/scikit-learn>`_.
 
 We also plot the score on a validation dataset for all algorithms. For
 classification algorithms, it's the fraction of correctly classified samples,
@@ -32,7 +32,7 @@ We used the latest released version as of June 2011:
   - PyMVPA 0.6.0~rc3
   - Shogun 0.10.0
 
-I ran it on an Intel(R) Core(TM)2 CPU @ 1.86GHz.
+I ran it on an Intel Core2 CPU @ 1.86GHz.
 
 
 Used datasets
@@ -69,7 +69,7 @@ to have the fastest method at 1.0.
      ============      =======       ======     ====     =======     ========    =============      ========
           Dataset       PyMVPA       Shogun      MDP     Pybrain         MLPy    scikits.learn          Milk
      ============      =======       ======     ====     =======     ========    =============      ========
-          Madelon        12.89         6.03       --          --        10.88             6.23          4.90
+          Madelon        12.89         6.03       --          --        10.88             6.23      **4.90**
           Arcene          1.37         0.42       --          --         1.75             0.41      **0.34**
      ============      =======       ======     ====     =======     ========    =============      ========
 
@@ -150,8 +150,8 @@ We solve the elastic net using a coordinate descent algorithm on both Madelon an
      ============     =======    ========    =============
           Dataset     PyMVPA         MLPy    scikits.learn
      ============     =======    ========    =============
-          Madelon        1.66        73.7             0.47
-           Arcene        2.46       65.48             1.90
+          Madelon        1.66        73.7         **0.47**
+           Arcene        2.46       65.48         **1.90**
      ============     =======    ========    =============
 
 
@@ -185,8 +185,8 @@ that some NaN arise, probably due to collinearity in the data.
      ============    =======  ===========    =============
           Dataset     PyMVPA         MLPy    scikits.learn
      ============    =======  ===========    =============
-          Madelon      36.32        105.3             1.17
-           Arcene       9.99         3.82             2.95
+          Madelon      36.32        105.3         **1.17**
+           Arcene       9.99         3.82         **2.95**
      ============    =======  ===========    =============
 
 .. figure:: bench_lars.png
@@ -219,7 +219,7 @@ memory requirements.
      ============     =======   ====   =======   =============   ========
           Dataset      PyMVPA    MDP   Pybrain   scikits.learn       milk
      ============     =======   ====   =======   =============   ========
-          Madelon        0.48   0.47      8.93            0.18       3.07
+          Madelon        0.48   0.47      8.93        **0.18**       3.07
      ============     =======   ====   =======   =============   ========
 
 
@@ -240,4 +240,5 @@ Misc
 ----
 
 Author : Fabian Pedregosa
+
 License : Simplified BSD
