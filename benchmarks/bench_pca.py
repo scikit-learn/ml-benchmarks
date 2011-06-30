@@ -28,8 +28,9 @@ def bench_skl(X, y, T, valid):
     start = datetime.now()
     clf = decomposition.RandomizedPCA(n_components=n_components)
     clf.fit(X)
+    delta = datetime.now() - start
     ev = explained_variance(X, clf.components_).sum()
-    return ev, datetime.now() - start
+    return ev, delta
 
 
 def bench_pybrain(X, y, T, valid):
@@ -39,8 +40,9 @@ def bench_pybrain(X, y, T, valid):
     from pybrain.auxiliary import pca
     start = datetime.now()
     W = pca.pPca(X, n_components)
+    delta = datetime.now() - start
     ev = explained_variance(X, W).sum()
-    return ev, datetime.now() - start
+    return ev, delta
 
 
 def bench_mdp(X, y, T, valid):
@@ -52,22 +54,24 @@ def bench_mdp(X, y, T, valid):
     clf = PCANode(output_dim=n_components)
     clf.train(X)
     clf.stop_training()
+    delta = datetime.now() - start
     ev = explained_variance(X, clf.v.T).sum()
-    return ev, datetime.now() - start
+    return ev, delta
 
 
 def bench_pymvpa(X, y, T, valid):
 #
 #       .. PyMVPA ..
 #
-    from mvpa.mappers.mdp_adaptor import PCAMapper as MVPA_PCA
+    from mvpa.mappers.mdp_adaptor import PCAMapper
     from mvpa.datasets import dataset_wizard
     start = datetime.now()
-    clf = MVPA_PCA(output_dim=n_components)
+    clf = PCAMapper(output_dim=n_components)
     data = dataset_wizard(samples=X)
     clf.train(data)
+    delta = datetime.now() - start
     ev = explained_variance(X, clf.proj.T).sum()
-    return ev, datetime.now() - start
+    return ev, delta
 
 
 def bench_milk(X, y, T, valid):
@@ -77,8 +81,9 @@ def bench_milk(X, y, T, valid):
     from milk.unsupervised import pca
     start = datetime.now()
     Y, W = pca(X, zscore=False)
+    delta = datetime.now() - start
     ev = explained_variance(X, W).sum()
-    return ev, datetime.now() - start
+    return ev, delta
 
 
 if __name__ == '__main__':

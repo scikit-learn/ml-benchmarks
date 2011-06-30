@@ -39,7 +39,8 @@ def bench_shogun(X, y, T, valid):
     distance = EuclidianDistance(feat, feat)
     clf = KMeans(n_components, distance)
     clf.train()
-    return inertia(X, clf.get_cluster_centers()), datetime.now() - start
+    delta = datetime.now() - tstart
+    return inertia(X, clf.get_cluster_centers()), delta
 
 
 def bench_skl(X, y, T, valid):
@@ -50,7 +51,8 @@ def bench_skl(X, y, T, valid):
     start = datetime.now()
     clf = skl_cluster.KMeans(k=n_components, n_init=1)
     clf.fit(X)
-    return inertia(X, clf.cluster_centers_), datetime.now() - start
+    delta = datetime.now() - tstart
+    return inertia(X, clf.cluster_centers_), delta
 
 
 def bench_pybrain(X, y, T, valid):
@@ -60,7 +62,8 @@ def bench_pybrain(X, y, T, valid):
     from pybrain.auxiliary import kmeans as pybrain_kmeans
     start = datetime.now()
     pybrain_kmeans.kmeanspp(X, n_components)
-    return np.inf, datetime.now() - start
+    delta = datetime.now() - tstart
+    return np.inf, delta
 
 
 def bench_mlpy(X, y, T, valid):
@@ -71,7 +74,8 @@ def bench_mlpy(X, y, T, valid):
     start = datetime.now()
     clf = mlpy_Kmeans(n_components)
     clf.compute(X)
-    return inertia(X, clf.means), datetime.now() - start
+    delta = datetime.now() - tstart
+    return inertia(X, clf.means), delta
 
 
 def bench_mdp(X, y, T, valid):
@@ -82,7 +86,8 @@ def bench_mdp(X, y, T, valid):
     start = datetime.now()
     clf = mdp_KMeans(n_components)
     clf.label(X)
-    return inertia(X, clf._centroids), datetime.now() - start
+    delta = datetime.now() - tstart
+    return inertia(X, clf._centroids), delta
 
 
 def bench_milk(X, y, T, valid):
@@ -92,7 +97,8 @@ def bench_milk(X, y, T, valid):
     from milk.unsupervised import kmeans as milk_kmeans
     start = datetime.now()
     _, centroids = milk_kmeans(X, n_components)
-    return inertia(X, centroids), datetime.now() - start
+    delta = datetime.now() - tstart
+    return inertia(X, centroids), delta
 
 
 if __name__ == '__main__':

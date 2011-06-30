@@ -69,11 +69,14 @@ if __name__ == '__main__':
     print 'Done, %s samples with %s features loaded into ' \
           'memory' % data[0].shape
 
-##    score, res_skl = misc.bench(bench_skl, data)
-##    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
+    score, res_skl = misc.bench(bench_skl, data)
+    print 'scikits.learn: mean %s, std %s' % (res_skl.mean(), res_skl.std())
+    print 'MSE ', score
 
     score, res_mlpy = misc.bench(bench_mlpy, data)
     print 'MLPy: mean %s, std %s' % (res_mlpy.mean(), res_mlpy.std())
+    print 'MSE ', score
 
-##    score, res_pymvpa = misc.bench(bench_pymvpa, data)
-##    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
+    score, res_pymvpa = misc.bench(bench_pymvpa, data)
+    print 'PyMVPA: mean %s, std %s' % (res_pymvpa.mean(), res_pymvpa.std())
+    print 'MSE ', score

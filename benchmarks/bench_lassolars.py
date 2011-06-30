@@ -12,9 +12,10 @@ def bench_skl(X, y, T, valid):
     start = datetime.now()
     skl_clf = linear_model.LassoLARS(alpha=0.)
     skl_clf.fit(X, y, normalize=False)
-    mse = np.linalg.norm(
-        skl_clf.predict(T) - valid, 2)**2
-    return mse, datetime.now() - start
+    pred = skl_clf.predict(T)
+    delta = datetime.now() - start
+    mse = np.linalg.norm(pred - valid, 2)**2
+    return mse, delta
 
 
 def bench_mlpy(X, y, T, valid):
@@ -25,9 +26,10 @@ def bench_mlpy(X, y, T, valid):
     start = datetime.now()
     mlpy_clf = mlpy_lasso(m=X.shape[1])
     mlpy_clf.learn(X, y)
-    mse = np.linalg.norm(
-        mlpy_clf.pred(T) - valid, 2)**2
-    return mse, datetime.now() - start
+    pred = mlpy_clf.pred(T)
+    delta = datetime.now() - start
+    mse = np.linalg.norm(pred - valid, 2)**2
+    return mse, delta
 
 
 def bench_pymvpa(X, y, T, valid):
@@ -41,9 +43,11 @@ def bench_pymvpa(X, y, T, valid):
     data = dataset_wizard(X, y)
     mvpa_clf = mvpa_lars.LARS()
     mvpa_clf.train(data)
+    delta  = datetime.now() - start
 #    BROKEN
 #    mvpa_pred = mvpa_clf.predict(X)
-    return None, datetime.now() - tstart
+    return None, delta
+
 
 if __name__ == '__main__':
     import sys, misc
