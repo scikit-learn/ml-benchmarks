@@ -49,7 +49,7 @@ def bench_skl(X, y, T, valid):
 #
     from scikits.learn import cluster as skl_cluster
     start = datetime.now()
-    clf = skl_cluster.MiniBatchKMeans(k=n_components)
+    clf = skl_cluster.KMeans(k=n_components, n_init=1)
     clf.fit(X)
     delta = datetime.now() - start
     return inertia(X, clf.cluster_centers_), delta
