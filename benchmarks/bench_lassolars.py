@@ -27,6 +27,7 @@ def bench_mlpy(X, y, T, valid):
     mlpy_clf = mlpy_lasso(m=X.shape[1])
     mlpy_clf.learn(X, y)
     pred = mlpy_clf.pred(T)
+    import pdb; pdb.set_trace()
     delta = datetime.now() - start
     mse = np.linalg.norm(pred - valid, 2)**2
     return mse, delta
@@ -69,10 +70,10 @@ if __name__ == '__main__':
     print 'Done, %s samples with %s features loaded into ' \
       'memory' % data[0].shape
 
-    score, res_skl = misc.bench(bench_skl, data)
-    print 'scikits.learn: mean %.2f, std %.2f' % (
-        np.mean(res_skl), np.std(res_skl))
-    print 'MSE: %s\n' % score
+##    score, res_skl = misc.bench(bench_skl, data)
+##    print 'scikits.learn: mean %.2f, std %.2f' % (
+##        np.mean(res_skl), np.std(res_skl))
+##    print 'MSE: %s\n' % score
 
     score, res_mlpy = misc.bench(bench_mlpy, data)
     print 'MLPy: mean %.2f, std %.2f' % (

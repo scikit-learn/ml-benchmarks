@@ -109,20 +109,26 @@ if __name__ == '__main__':
     print 'Done, %s samples with %s features loaded into ' \
       'memory' % data[0].shape
 
-    res_shogun = misc.bench(bench_shogun, data)
+    score, res_shogun = misc.bench(bench_shogun, data)
     print 'Shogun: mean %.2f, std %.2f\n' % (res_shogun.mean(), res_shogun.std())
+    print 'Score: %.2f' % score
 
-    res_mdp = misc.bench(bench_mdp, data)
+    score, res_mdp = misc.bench(bench_mdp, data)
     print 'MDP: mean %.2f, std %.2f\n' % (res_mdp.mean(), res_mdp.std())
+    print 'Score: %.2f' % score
 
-    res_skl = misc.bench(bench_skl, data)
+    score, res_skl = misc.bench(bench_skl, data)
     print 'scikits.learn: mean %.2f, std %.2f\n' % (res_skl.mean(), res_skl.std())
+    print 'Score: %.2f' % score
 
-    res_mlpy = misc.bench(bench_mlpy, data)
+    score, res_mlpy = misc.bench(bench_mlpy, data)
     print 'MLPy: mean %.2f, std %.2f\n' % (res_mlpy.mean(), res_mlpy.std())
+    print 'Score: %.2f' % score
 
-    res_milk = misc.bench(bench_milk, data)
+    score, res_milk = misc.bench(bench_milk, data)
     print 'milk: mean %.2f, std %.2f\n' % (res_milk.mean(), res_milk.std())
+    print 'Score: %.2f' % score
 
-    res_pymvpa = misc.bench(bench_pymvpa, data)
+    score, res_pymvpa = misc.bench(bench_pymvpa, data)
     print 'PyMVPA: mean %.2f, std %.2f\n' % (res_pymvpa.mean(), res_pymvpa.std())
+    print 'Score: %.2f' % score

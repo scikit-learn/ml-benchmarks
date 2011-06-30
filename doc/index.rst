@@ -15,7 +15,7 @@ exposed in Python: `MLPy <http://mlpy.fbk.eu/>`_, `PyBrain
 and `MiLK <http://luispedro.org/software/milk>`_. Code for running the
 benchmarks can be retrieved `it's github repository <http://github.com/scikit-learn>`_.
 
-We also plot the score on a validation dataset for all algorithms. For
+We also print the score on a validation dataset for all algorithms. For
 classification algorithms, it's the fraction of correctly classified samples,
 for regression algorithms it's the mean squared error and for k-means it's the
 inertia criterion.
@@ -80,10 +80,6 @@ to have the fastest method at 1.0.
 
 The score by these calssfifiers in in a test dataset is.
 
-.. warning::
-
-     This is just meant as a sanity check, should not be taken at face
-     value since parameters are not cross-validated, etc.
 
 .. table:: Score in scikits.learn ml-benchmarks
 
@@ -93,6 +89,40 @@ The score by these calssfifiers in in a test dataset is.
           Madelon        0.5       0.0      --         --          0.65            0.65         0.0
           Arcene        0.56      0.56      --         --          0.56            0.56        0.56
      ============    =======    ======    ====    =======   ===========   =============    ========
+
+
+.. warning::
+
+     This is just meant as a sanity check, should not be taken at face
+     value since parameters are not cross-validated, etc.
+
+
+Nearest neighbors
+-----------------
+
+.. table:: Timing
+
+     ============      ========   ======     ====    ========    =============   ======
+          Dataset        PyMVPA   Shogun      MDP        MLPy    scikits.learn    milk
+     ============      ========   ======     ====    ========    =============   ======
+          Madelon      **0.56**     1.36     0.58        1.41             0.57     8.24
+          Arcene           0.10     0.22     0.10        0.21         **0.09**     1.33
+     ============      ========   ======     ====    ========    =============   ======
+
+
+.. figure:: bench_knn.png
+   :scale: 60%
+   :align: center
+
+
+.. table:: Score
+
+     ============    =======    ======    ======   =========   =============  =====
+          Dataset     PyMVPA    Shogun      MDP         MLPy   scikits.learn   milk
+     ============    =======    ======    ======   =========   =============  =====
+          Madelon       0.73      0.73      0.73        0.73            0.73   0.73
+          Arcene        0.73      0.73      0.73        0.73            0.73   0.73
+     ============    =======    ======    ======   =========   =============  =====
 
 
 .. Logistic Regression
@@ -234,6 +264,7 @@ memory requirements.
      ============     ========   ========   ========   =============   =========
           Madelon     136705.5   136705.5   228941.0        135788.2   455715.83
      ============     ========   ========   ========   =============   =========
+
 
 
 Misc
