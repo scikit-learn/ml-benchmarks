@@ -15,7 +15,7 @@ def bench_shogun(X, y, T, valid):
     feat = RealFeatures(X.T)
     feat_test = RealFeatures(T.T)
     labels = Labels(y.astype(np.float64))
-    kernel = GaussianKernel(feat, feat, 1. / X.shape[0])
+    kernel = GaussianKernel(feat, feat, sigma)
     shogun_svm = LibSVM(1., kernel, labels)
     shogun_svm.train()
     dec_func = shogun_svm.classify(feat_test).get_labels()
@@ -27,11 +27,11 @@ def bench_mlpy(X, y, T, valid):
 #
 #       .. MLPy ..
 #
-    from mlpy import LibSvm as mlpy_svm
+    from mlpy import LibSvm
     start = datetime.now()
-    mlpy_clf = mlpy_svm(kernel_type='rbf', C=1.)
-    mlpy_clf.learn(X, y.astype(np.float64))
-    score = np.mean(mlpy_clf.pred(T) == valid)
+    clf = LibSvm(kernel_type='rbf', C=1., gamma=1./sigma)
+    clf.learn(X, y.astype(np.float64))
+    score = np.mean(clf.pred(T) == valid)
     return score, datetime.now() - start
 
 
@@ -41,7 +41,7 @@ def bench_skl(X, y, T, valid):
 #
     from scikits.learn import svm as skl_svm
     start = datetime.now()
-    clf = skl_svm.SVC(kernel='rbf', C=1.)
+    clf = skl_svm.SVC(kernel='rbf', C=1., gamma=1./sigma)
     clf.fit(X, y)
     score = np.mean(clf.predict(T) == valid)
     return score, datetime.now() - start
@@ -51,11 +51,12 @@ def bench_pymvpa(X, y, T, valid):
 #
 #       .. PyMVPA ..
 #
-    from mvpa.clfs import svm as mvpa_svm
+    from mvpa.clfs import svm
     from mvpa.datasets import dataset_wizard
     tstart = datetime.now()
     data = dataset_wizard(X, y)
-    clf = mvpa_svm.RbfCSVMC(C=1.)
+    kernel = svm.RbfSVMKernel(gamma = 1./sigma)
+    clf = svm.SVM(C=1., kernel=kernel)
     clf.train(data)
     score = np.mean(clf.predict(T) == valid)
     return score, datetime.now() - tstart
@@ -88,9 +89,10 @@ def bench_mdp(X, y, T, valid):
 #
 #       .. MDP ..
 #
-    from mdp.nodes import LibSVMClassifier as mdp_svm
+    from mdp.nodes import LibSVMClassifier
     start = datetime.now()
-    clf = mdp_svm(kernel='RBF')
+    clf = LibSVMClassifier(kernel='RBF')
+    clf.parameter.gamma = 1. / sigma
     clf.train(X, y)
     score = np.mean(clf.label(T) == valid)
     return score, datetime.now() - start
@@ -103,7 +105,7 @@ def bench_milk(X, y, T, valid):
     from milk.supervised import svm
     start = datetime.now()
     learner = svm.svm_raw(
-        kernel=svm.rbf_kernel(sigma=1./X.shape[1]), C=1.)
+        kernel=svm.rbf_kernel(sigma=sigma), C=1.)
     model = learner.train(X,y)
     pred = np.sign(map(model.apply, T))
     score = np.mean(pred == valid)
@@ -127,40 +129,44 @@ if __name__ == '__main__':
     print 'Loading data ...'
     data = misc.load_data(dataset)
 
+    # set sigma to something useful
+    from milk.unsupervised import pdist
+    sigma = np.median(pdist(data[0]))
+
     print 'Done, %s samples with %s features loaded into ' \
       'memory' % data[0].shape
 
     score, res_shogun = misc.bench(bench_shogun, data)
     print 'Shogun: mean %.2f, std %.2f' % (
         np.mean(res_shogun), np.std(res_shogun))
-    print 'Score: %2f\n' % score
+    print 'Score: %.2f\n' % score
 
     score, res_mdp = misc.bench(bench_mdp, data)
     print 'MDP: mean %.2f, std %.2f' % (
         np.mean(res_mdp), np.std(res_mdp))
-    print 'Score: %2f\n' % score
+    print 'Score: %.2f\n' % score
 
     score, res_skl = misc.bench(bench_skl, data)
     print 'scikits.learn: mean %.2f, std %.2f' % (
         np.mean(res_skl), np.std(res_skl))
-    print 'Score: %2f\n' % score
+    print 'Score: %.2f\n' % score
 
     score, res_mlpy = misc.bench(bench_mlpy, data)
     print 'MLPy: mean %.2f, std %.2f' % (
         np.mean(res_mlpy), np.std(res_mlpy))
-    print 'Score: %2f\n' % score
+    print 'Score: %.2f\n' % score
 
     score, res_pymvpa = misc.bench(bench_pymvpa, data)
     print 'PyMVPA: mean %.2f, std %.2f' % (
         np.mean(res_pymvpa), np.std(res_pymvpa))
-    print 'Score: %2f\n' % score
+    print 'Score: %.2f\n' % score
 
     score, res_pybrain = misc.bench(bench_pybrain, data)
     print 'Pybrain: mean %.2f, std %.2f' % (
         np.mean(res_pybrain), np.std(res_pybrain))
-    print 'Score: %2f\n' % score
+    print 'Score: %.2f\n' % score
 
     score, res_milk = misc.bench(bench_milk, data)
     print 'milk: mean %.2f, std %.2f' % (
         np.mean(res_milk), np.std(res_milk))
-    print 'Score: %2f\n' % score
+    print 'Score: %.2f\n' % score
