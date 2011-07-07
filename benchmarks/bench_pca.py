@@ -12,8 +12,8 @@ def explained_variance(X, W):
     X).
     """
     mean = np.mean(X, axis=0)
-    X -= mean
-    C = np.dot(X.T, X)
+    _X = X - mean
+    C = np.dot(_X.T, _X)
     s = np.zeros(W.shape[0])
     for i in range(W.shape[0]):
         s[i] = np.dot(np.dot(W[i], C.T), W[i].T) / np.dot(W[i], W[i].T)

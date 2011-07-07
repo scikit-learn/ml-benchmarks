@@ -161,12 +161,12 @@ The following table shows the inertia, criterion that the k-means algorithm mini
 
 .. table:: Inertia
 
-     ============   ==========     =======     ===========    =============     ==============
+     ============   ==========    ========     ===========    =============     ==============
           Dataset          MDP     Pybrain            MLPy    scikits.learn               Milk
-     ============   ==========     =======     ===========    =============     ==============
+     ============   ==========    ========     ===========    =============     ==============
           Madelon     7.4x10^8          --        7.3x10^8         7.4x10^8           7.3x10^8
            Arcene     1.4x10^9          oo        1.4x10^9         1.4x10^9           1.4x10^9
-     ============   ==========     =======     ===========    =============     ==============
+     ============   ==========    ========     ===========    =============     ==============
 
 
 Elastic Net
@@ -178,10 +178,10 @@ We solve the elastic net using a coordinate descent algorithm on both Madelon an
 .. table:: Results in scikits.learn ml-benchmarks
 
      ============     =======    ========    =============
-          Dataset     PyMVPA         MLPy    scikits.learn
+          Dataset      PyMVPA        MLPy    scikits.learn
      ============     =======    ========    =============
-          Madelon        1.66        73.7         **0.47**
-           Arcene        2.46       65.48         **1.90**
+          Madelon        1.44        73.7         **0.52**
+           Arcene        2.31       65.48         **1.90**
      ============     =======    ========    =============
 
 
@@ -194,7 +194,7 @@ We solve the elastic net using a coordinate descent algorithm on both Madelon an
      ============     =======    ========    =============
           Dataset     PyMVPA         MLPy    scikits.learn
      ============     =======    ========    =============
-          Madelon       699.1      3759.8            577.3
+          Madelon       699.1      3759.8            597.1
            Arcene       84.92      151.28            65.39
      ============     =======    ========    =============
 
@@ -207,7 +207,7 @@ scikits.learn use a pure Python implementation, while PyMVPA uses bindings to
 R code.
 
 We also show the Mean Squared error as a sanity check for the model. Note
-that some NaN arise, probably due to collinearity in the data.
+that some NaN arise due to collinearity in the data.
 
 
 .. table:: Timing
@@ -215,8 +215,8 @@ that some NaN arise, probably due to collinearity in the data.
      ============    =======  ===========    =============
           Dataset     PyMVPA         MLPy    scikits.learn
      ============    =======  ===========    =============
-          Madelon      36.32        105.3         **1.17**
-           Arcene       9.99         3.82         **2.95**
+          Madelon      37.35        105.3         **1.17**
+           Arcene      11.53         3.82         **2.95**
      ============    =======  ===========    =============
 
 .. figure:: bench_lars.png
@@ -229,8 +229,8 @@ that some NaN arise, probably due to collinearity in the data.
      ============  =======  =============    =============
           Dataset   PyMVPA           MLPy    scikits.learn
      ============  =======  =============    =============
-          Madelon      NaN         682.32           680.91
-           Arcene      NaN            NaN            65.39
+          Madelon    567.0         682.32           680.91
+           Arcene     87.5            NaN            65.39
      ============  =======  =============    =============
 
 
@@ -259,11 +259,11 @@ memory requirements.
 
 .. table:: explained variance
 
-     ============     ========   ========   ========   =============   =========
+     ============    =========   ========   ========   =============   =========
           Dataset       PyMVPA        MDP    Pybrain   scikits.learn        milk
-     ============     ========   ========   ========   =============   =========
+     ============    =========   ========   ========   =============   =========
           Madelon     136705.5   136705.5   228941.0        135788.2   455715.83
-     ============     ========   ========   ========   =============   =========
+     ============    =========   ========   ========   =============   =========
 
 
 

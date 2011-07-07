@@ -22,12 +22,11 @@ def bench_mlpy(X, y, T, valid):
 #
 #       .. MLPy ..
 #
-    from mlpy import Lasso as mlpy_lasso
+    from mlpy import Lasso
     start = datetime.now()
-    mlpy_clf = mlpy_lasso(m=X.shape[1])
+    mlpy_clf = Lasso(m=10 * X.shape[1]) # go till the end of the path
     mlpy_clf.learn(X, y)
     pred = mlpy_clf.pred(T)
-    import pdb; pdb.set_trace()
     delta = datetime.now() - start
     mse = np.linalg.norm(pred - valid, 2)**2
     return mse, delta
@@ -37,17 +36,16 @@ def bench_pymvpa(X, y, T, valid):
 #
 #       .. PyMVPA ..
 #
-
     from mvpa.datasets import dataset_wizard
-    from mvpa.clfs import lars as mvpa_lars
-    tstart = datetime.now()
+    from mvpa.clfs import lars
+    start = datetime.now()
     data = dataset_wizard(X, y)
-    mvpa_clf = mvpa_lars.LARS()
-    mvpa_clf.train(data)
+    clf = lars.LARS(model_type="lasso")
+    clf.train(data)
+    pred = clf.predict(T)
     delta  = datetime.now() - start
-#    BROKEN
-#    mvpa_pred = mvpa_clf.predict(X)
-    return None, delta
+    mse = np.linalg.norm(pred - valid, 2) ** 2
+    return mse, delta
 
 
 if __name__ == '__main__':
@@ -70,10 +68,10 @@ if __name__ == '__main__':
     print 'Done, %s samples with %s features loaded into ' \
       'memory' % data[0].shape
 
-##    score, res_skl = misc.bench(bench_skl, data)
-##    print 'scikits.learn: mean %.2f, std %.2f' % (
-##        np.mean(res_skl), np.std(res_skl))
-##    print 'MSE: %s\n' % score
+    score, res_skl = misc.bench(bench_skl, data)
+    print 'scikits.learn: mean %.2f, std %.2f' % (
+        np.mean(res_skl), np.std(res_skl))
+    print 'MSE: %s\n' % score
 
     score, res_mlpy = misc.bench(bench_mlpy, data)
     print 'MLPy: mean %.2f, std %.2f' % (
