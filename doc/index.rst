@@ -28,7 +28,7 @@ Software used
 
 We used the latest released version as of June 2011:
 
-  - scikits.learn 0.8
+  - scikit-learn 0.8
   - MDP 3.1
   - MLPy 2.2.2
   - PyMVPA 0.6.0~rc3
@@ -70,7 +70,7 @@ to have the fastest method at 1.0.
 .. table:: **Timing results in seconds**
 
    ============    =======     ======     ======     =======     ========    =============      ========
-        Dataset     PyMVPA     Shogun        MDP     Pybrain         MLPy    scikits.learn          Milk
+        Dataset     PyMVPA     Shogun        MDP     Pybrain         MLPy     scikit-learn          Milk
    ============    =======     ======     ======     =======     ========    =============      ========
         Madelon      11.52       5.63      40.48        17.5         9.47         **5.20**          5.76
         Arcene        1.30       0.39       4.87          --         1.61             0.38      **0.33**
@@ -87,7 +87,7 @@ The score by these classfifiers in in a test dataset is.
 .. table:: **Classification score** - smaller is better
 
      ============    =======    ======    ====    =======   ===========   =============    ========
-          Dataset     PyMVPA    Shogun    MDP     Pybrain          MLPy   scikits.learn        milk
+          Dataset     PyMVPA    Shogun    MDP     Pybrain          MLPy    scikit-learn        milk
      ============    =======    ======    ====    =======   ===========   =============    ========
           Madelon       0.65      0.65      --         --          0.65            0.65        0.50
           Arcene        0.73      0.73    0.73         --          0.73            0.73        0.73
@@ -106,7 +106,7 @@ Nearest neighbors
 .. table:: **Timing results in seconds**
 
      ============      ========   ======     ====    ========    =============   ======
-          Dataset        PyMVPA   Shogun      MDP        MLPy    scikits.learn    milk
+          Dataset        PyMVPA   Shogun      MDP        MLPy     scikit-learn    milk
      ============      ========   ======     ====    ========    =============   ======
           Madelon      **0.56**     1.36     0.58        1.41             0.57     8.24
           Arcene           0.10     0.22     0.10        0.21         **0.09**     1.33
@@ -121,7 +121,7 @@ Nearest neighbors
 .. table:: **Classification score** - larger is better
 
      ============    =======    ======    ======   =========   =============  =====
-          Dataset     PyMVPA    Shogun      MDP         MLPy   scikits.learn   milk
+          Dataset     PyMVPA    Shogun      MDP         MLPy    scikit-learn   milk
      ============    =======    ======    ======   =========   =============  =====
           Madelon       0.73      0.73      0.73        0.73            0.73   0.73
           Arcene        0.73      0.73      0.73        0.73            0.73   0.73
@@ -146,7 +146,7 @@ Note: The shogun is failling ..
 .. table:: **Timing results in seconds**
 
      ============  =====   ========    =======   ========    =============    ========
-          Dataset    MDP     Shogun    Pybrain       MLPy    scikits.learn        milk
+          Dataset    MDP     Shogun    Pybrain       MLPy     scikit-learn        milk
      ============  =====   ========    =======   ========    =============    ========
           Madelon  35.75       0.68         NC       0.79             1.34    **0.67**
            Arcene   2.07   **0.19**      20.50       0.33             0.51        0.23
@@ -165,7 +165,7 @@ The following table shows the inertia, criterion that the k-means algorithm mini
 .. table:: **Inertia** - smaller is better
 
      ============   ==========  ========  ========     ===========    =============     ==============
-          Dataset          MDP    Shogun   Pybrain            MLPy    scikits.learn               Milk
+          Dataset          MDP    Shogun   Pybrain            MLPy     scikit-learn               Milk
      ============   ==========  ========  ========     ===========    =============     ==============
           Madelon     7.4x10^8  7.3x10^8       --        7.3x10^8         7.4x10^8           7.3x10^8
            Arcene     1.4x10^9                 oo        1.4x10^9         1.4x10^9           1.4x10^9
@@ -181,7 +181,7 @@ We solve the elastic net using a coordinate descent algorithm on both Madelon an
 .. table:: **Timing results in seconds**
 
      ============     =======    ========    =============
-          Dataset      PyMVPA        MLPy    scikits.learn
+          Dataset      PyMVPA        MLPy     scikit-learn
      ============     =======    ========    =============
           Madelon        1.44        73.7         **0.52**
            Arcene        2.31       65.48         **1.90**
@@ -195,7 +195,7 @@ We solve the elastic net using a coordinate descent algorithm on both Madelon an
 .. table:: **Mean squared error** - smaller is better
 
      ============     =======    ========    =============
-          Dataset     PyMVPA         MLPy    scikits.learn
+          Dataset     PyMVPA         MLPy     scikit-learn
      ============     =======    ========    =============
           Madelon       699.1      3759.8            597.1
            Arcene       84.92      151.28            65.39
@@ -206,7 +206,7 @@ Lasso (LARS algorithm)
 ----------------------
 
 We solve the Lasso model by Least Angle Regression (LARS) algorithm. MLPy and
-scikits.learn use a pure Python implementation, while PyMVPA uses bindings to
+scikit-learn use a pure Python implementation, while PyMVPA uses bindings to
 R code.
 
 We also show the Mean Squared error as a sanity check for the model. Note
@@ -216,7 +216,7 @@ that some NaN arise due to collinearity in the data.
 .. table:: **Timing results in seconds**
 
      ============    =======  =========    =============
-          Dataset     PyMVPA       MLPy    scikits.learn
+          Dataset     PyMVPA       MLPy     scikit-learn
      ============    =======  =========    =============
           Madelon      37.35      105.3         **1.17**
            Arcene      11.53       3.82         **2.95**
@@ -230,7 +230,7 @@ that some NaN arise due to collinearity in the data.
 .. table:: **Mean Squared Error on a test dataset** - smaller is better
 
      ============  =======  =============    =============
-          Dataset   PyMVPA           MLPy    scikits.learn
+          Dataset   PyMVPA           MLPy     scikit-learn
      ============  =======  =============    =============
           Madelon    567.0         682.32           680.91
            Arcene     87.5            NaN            65.39
@@ -250,7 +250,7 @@ memory requirements.
 .. table:: **Timing results in seconds**
 
      ============     =======   ====   =======   =============   ========
-          Dataset      PyMVPA    MDP   Pybrain   scikits.learn       milk
+          Dataset      PyMVPA    MDP   Pybrain    scikit-learn       milk
      ============     =======   ====   =======   =============   ========
           Madelon        0.48   0.47      8.93        **0.18**       3.07
      ============     =======   ====   =======   =============   ========
@@ -263,7 +263,7 @@ memory requirements.
 .. table:: **Explained variance** - larger is better
 
      ============    =========   ========   ========   =============   =========
-          Dataset       PyMVPA        MDP    Pybrain   scikits.learn        milk
+          Dataset       PyMVPA        MDP    Pybrain    scikit-learn       milk
      ============    =========   ========   ========   =============   =========
           Madelon     136705.5   136705.5   113545.8        135788.2    139158.7
      ============    =========   ========   ========   =============   =========

@@ -33,12 +33,13 @@ compilation settings (e.g. linear algebra packs).
 References
 ----------
 
-  - scikits.learn : http://scikit-learn.sourceforge.net
+  - scikit-learn : http://scikit-learn.sourceforge.net
   - MDP : http://mdp-toolkit.sourceforge.net/
   - PyMVPA : http://pymvpa.org
   - MLPy : https://mlpy.fbk.eu/
   - Shogun: http://www.shogun-toolbox.org/
   - PyBrain : http://pybrain.org/
+  - Milk : http://luispedro.org/software/milk
 
 
 Misc
