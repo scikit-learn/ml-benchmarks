@@ -2,6 +2,7 @@
 
 import numpy as np
 from datetime import datetime
+from scipy import linalg
 
 n_components = 9
 
@@ -13,11 +14,10 @@ def explained_variance(X, W):
     """
     mean = np.mean(X, axis=0)
     _X = X - mean
-    C = np.dot(_X.T, _X)
-    s = np.zeros(W.shape[0])
-    for i in range(W.shape[0]):
-        s[i] = np.dot(np.dot(W[i], C.T), W[i].T) / np.dot(W[i], W[i].T)
-    return s / X.shape[0]
+    W = W / np.sqrt((W**2).sum(axis=1)[:, np.newaxis])
+    g = np.dot(W, W.T)
+    X_red = np.dot(linalg.pinv(g), np.dot(W, _X.T))
+    return (X_red**2).sum() / X.shape[0]
 
 
 def bench_skl(X, y, T, valid):
@@ -41,6 +41,7 @@ def bench_pybrain(X, y, T, valid):
     start = datetime.now()
     W = pca.pPca(X, n_components)
     delta = datetime.now() - start
+    W = np.asarray(W)
     ev = explained_variance(X, W).sum()
     return ev, delta
 
@@ -82,7 +83,7 @@ def bench_milk(X, y, T, valid):
     start = datetime.now()
     Y, W = pca(X, zscore=False)
     delta = datetime.now() - start
-    ev = explained_variance(X, W).sum()
+    ev = explained_variance(X, W.T[:10]).sum()
     return ev, delta
 
 
