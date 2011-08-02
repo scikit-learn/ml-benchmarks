@@ -20,7 +20,8 @@ running the benchmark 10 times with its extreme values removed.
 Results
 ----------
 
-Some result of running these benchmarks on different boxes can be found on:
+Some result of running these benchmarks on different boxes and with different software versions can 
+be found on:
 
   - http://scikit-learn.sourceforge.net/ml-benchmarks/
   - http://fseoane.net/ml-benchmarks/

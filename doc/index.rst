@@ -6,14 +6,16 @@ Benchmarks
 We compare computation time for a few algorithms implemented in the
 major machine learning toolkits accessible in Python.
 
-**Last Update: June-2011**
+**Last Update: July-2011**
 
-Time in seconds on the Madelon dataset for various machine learning libraries
+We report the execution time for various machine learning libraries
 exposed in Python: `MLPy <http://mlpy.fbk.eu/>`_, `PyBrain
 <http://pybrain.org/>`_, `PyMVPA <http://pymvpa.org>`_, `MDP
-<http://mdp-toolkit.sourceforge.net/>`_, `Shogun <http://shogun-toolbox.org>`_
-and `MiLK <http://luispedro.org/software/milk>`_. Code for running the
-benchmarks can be retrieved `it's github repository <http://github.com/scikit-learn>`_.
+<http://mdp-toolkit.sourceforge.net/>`_, `Shogun
+<http://shogun-toolbox.org>`_ and `MiLK
+<http://luispedro.org/software/milk>`_. Code for running the benchmarks
+can be retrieved `its github repository
+<http://github.com/scikit-learn>`_.
 
 We also print the score on a validation dataset for all algorithms. For
 classification algorithms, it's the fraction of correctly classified samples,
@@ -21,7 +23,7 @@ for regression algorithms it's the mean squared error and for k-means it's the
 inertia criterion.
 
 
-Used software
+Software used
 -------------
 
 We used the latest released version as of June 2011:
@@ -31,11 +33,12 @@ We used the latest released version as of June 2011:
   - MLPy 2.2.2
   - PyMVPA 0.6.0~rc3
   - Shogun 0.10.0
+  - Milk 0.3.9
 
 I ran it on an Intel Core2 CPU @ 1.86GHz.
 
 
-Used datasets
+Datasets used
 -------------
 
 
@@ -50,9 +53,9 @@ The `arcene data set <http://archive.ics.uci.edu/ml/datasets/Arcene>`_ task is
 to distinguish cancer versus normal patterns from mass-spectrometric data.
 This is a two-class classification problem with continuous input variables.
 This dataset is one of 5 datasets of the NIPS 2003 feature selection
-challenge. All details about the preparation of the data are found in our
-technical report: Design of experiments for the NIPS 2003 variable selection
-benchmark, Isabelle Guyon, July 2003.
+challenge. All details about the preparation of the data are found in the
+technical report: *Design of experiments for the NIPS 2003 variable selection
+benchmark*, Isabelle Guyon, July 2003.
 
 
 Support Vector Machines
@@ -64,24 +67,24 @@ and perform prediction on a test dataset. In the plot, results are normalized
 to have the fastest method at 1.0.
 
 
-.. table:: Results in scikits.learn ml-benchmarks
+.. table:: **Timing results in seconds**
 
-     ============      =======     ======     ======     =======     ========    =============      ========
-          Dataset       PyMVPA     Shogun        MDP     Pybrain         MLPy    scikits.learn          Milk
-     ============      =======     ======     ======     =======     ========    =============      ========
-          Madelon        11.52       5.63      40.48        17.5         9.47         **5.20**          5.76
-          Arcene          1.30       0.39       4.87          --         1.61             0.38      **0.33**
-     ============      =======     ======     ======     =======     ========    =============      ========
+   ============    =======     ======     ======     =======     ========    =============      ========
+        Dataset     PyMVPA     Shogun        MDP     Pybrain         MLPy    scikits.learn          Milk
+   ============    =======     ======     ======     =======     ========    =============      ========
+        Madelon      11.52       5.63      40.48        17.5         9.47         **5.20**          5.76
+        Arcene        1.30       0.39       4.87          --         1.61             0.38      **0.33**
+   ============    =======     ======     ======     =======     ========    =============      ========
 
 
 .. figure:: bench_svm.png
    :scale: 60%
    :align: center
 
-The score by these calssfifiers in in a test dataset is.
+The score by these classfifiers in in a test dataset is.
 
 
-.. table:: Score in scikits.learn ml-benchmarks
+.. table:: **Classification score** - smaller is better
 
      ============    =======    ======    ====    =======   ===========   =============    ========
           Dataset     PyMVPA    Shogun    MDP     Pybrain          MLPy   scikits.learn        milk
@@ -100,7 +103,7 @@ The score by these calssfifiers in in a test dataset is.
 Nearest neighbors
 -----------------
 
-.. table:: Timing
+.. table:: **Timing results in seconds**
 
      ============      ========   ======     ====    ========    =============   ======
           Dataset        PyMVPA   Shogun      MDP        MLPy    scikits.learn    milk
@@ -115,7 +118,7 @@ Nearest neighbors
    :align: center
 
 
-.. table:: Score
+.. table:: **Classification score** - larger is better
 
      ============    =======    ======    ======   =========   =============  =====
           Dataset     PyMVPA    Shogun      MDP         MLPy   scikits.learn   milk
@@ -140,7 +143,7 @@ methods, which are mostly equivalent.
 
 Note: The shogun is failling ..
 
-.. table:: Timing for k-Means algorithm
+.. table:: **Timing results in seconds**
 
      ============  =====   ========    =======   ========    =============    ========
           Dataset    MDP     Shogun    Pybrain       MLPy    scikits.learn        milk
@@ -159,7 +162,7 @@ NC = Not Converging after one hour iteration.
 
 The following table shows the inertia, criterion that the k-means algorithm minimizes.
 
-.. table:: Inertia
+.. table:: **Inertia** - smaller is better
 
      ============   ==========  ========  ========     ===========    =============     ==============
           Dataset          MDP    Shogun   Pybrain            MLPy    scikits.learn               Milk
@@ -175,7 +178,7 @@ Elastic Net
 We solve the elastic net using a coordinate descent algorithm on both Madelon and Arcene dataset.
 
 
-.. table:: Results in scikits.learn ml-benchmarks
+.. table:: **Timing results in seconds**
 
      ============     =======    ========    =============
           Dataset      PyMVPA        MLPy    scikits.learn
@@ -189,7 +192,7 @@ We solve the elastic net using a coordinate descent algorithm on both Madelon an
    :scale: 60%
    :align: center
 
-.. table:: Mean squared error
+.. table:: **Mean squared error** - smaller is better
 
      ============     =======    ========    =============
           Dataset     PyMVPA         MLPy    scikits.learn
@@ -210,7 +213,7 @@ We also show the Mean Squared error as a sanity check for the model. Note
 that some NaN arise due to collinearity in the data.
 
 
-.. table:: Timing
+.. table:: **Timing results in seconds**
 
      ============    =======  =========    =============
           Dataset     PyMVPA       MLPy    scikits.learn
@@ -224,7 +227,7 @@ that some NaN arise due to collinearity in the data.
    :align: center
 
 
-.. table:: Mean Squared Error on a test dataset
+.. table:: **Mean Squared Error on a test dataset** - smaller is better
 
      ============  =======  =============    =============
           Dataset   PyMVPA           MLPy    scikits.learn
@@ -244,7 +247,7 @@ projection to 9. For the arcene dataset, most libraries could not handle the
 memory requirements.
 
 
-.. table:: Timing PCA
+.. table:: **Timing results in seconds**
 
      ============     =======   ====   =======   =============   ========
           Dataset      PyMVPA    MDP   Pybrain   scikits.learn       milk
@@ -257,7 +260,7 @@ memory requirements.
    :scale: 60%
    :align: center
 
-.. table:: explained variance
+.. table:: **Explained variance** - larger is better
 
      ============    =========   ========   ========   =============   =========
           Dataset       PyMVPA        MDP    Pybrain   scikits.learn        milk
