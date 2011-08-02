@@ -9,6 +9,8 @@ do
 done
 git commit -a -m 'Automated doc commit'
 git checkout master
+echo 
+echo "******************************************************"
 echo "Docs added to the gh-pages branch"
-echo "You can review this branch and push to github"
+echo "You can review the gh-pages branch and push to github"
 
