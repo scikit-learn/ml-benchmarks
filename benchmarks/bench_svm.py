@@ -111,6 +111,42 @@ def bench_milk(X, y, T, valid):
     score = np.mean(pred == valid)
     return score, datetime.now() - start
 
+def bench_orange(X, y, T, valid):
+#
+#       .. Orange ..
+#
+    import orange
+    start = datetime.now()
+
+    # prepare data in Orange's format
+    columns = []
+    for i in range(0,X.shape[1]):
+        columns.append("a" +str(i))
+    [orange.EnumVariable(x) for x in columns]       
+    classValues = ['0','1']   
+
+    domain = orange.Domain(map(orange.FloatVariable, columns),
+                   orange.EnumVariable("class", values=classValues))
+    y.shape = (len(y),1) #reshape for Orange
+    y[np.where( y < 0)] = 0 # change class labels to 0..K
+    orng_train_data = orange.ExampleTable(domain, np.hstack((X,y)))
+
+    valid.shape = (len(valid),1)  #reshape for Orange
+    valid[np.where( valid < 0)] = 0 # change class labels to 0..K
+    orng_test_data = orange.ExampleTable(domain, np.hstack((T,valid)))
+
+    learner = orange.SVMLearner(orng_train_data, \
+                                svm_type=orange.SVMLearner.Nu_SVC, \
+                                kernel_type=orange.SVMLearner.RBF,C=1., \
+                                gamma= 1./sigma )   
+
+    pred = np.empty(T.shape[0], dtype=np.int32)
+    for i,e in enumerate(orng_test_data):
+        pred[i] = learner(e)
+
+    score = np.mean(pred == valid)
+    return score, datetime.now() - start
+
 
 if __name__ == '__main__':
     import sys, misc
@@ -170,3 +206,8 @@ if __name__ == '__main__':
     print 'milk: mean %.2f, std %.2f' % (
         np.mean(res_milk), np.std(res_milk))
     print 'Score: %.2f\n' % score
+    
+    score, res_orange = misc.bench(bench_orange, data)
+    print 'Orange: mean %.2f, std %.2f' % (
+        np.mean(res_orange), np.std(res_orange))
+    print 'Score: %.2f\n' % score    
