@@ -29,7 +29,7 @@ def bench_mlpy(X, y, T, valid):
 #
     from mlpy import LibSvm
     start = datetime.now()
-    clf = LibSvm(kernel_type='rbf', C=1., gamma=1./sigma)
+    clf = LibSvm(kernel_type='rbf', C=1., gamma=1. / sigma)
     clf.learn(X, y.astype(np.float64))
     score = np.mean(clf.pred(T) == valid)
     return score, datetime.now() - start
@@ -41,7 +41,7 @@ def bench_skl(X, y, T, valid):
 #
     from scikits.learn import svm as skl_svm
     start = datetime.now()
-    clf = skl_svm.SVC(kernel='rbf', C=1., gamma=1./sigma)
+    clf = skl_svm.SVC(kernel='rbf', C=1., gamma=1. / sigma)
     clf.fit(X, y)
     score = np.mean(clf.predict(T) == valid)
     return score, datetime.now() - start
@@ -55,7 +55,7 @@ def bench_pymvpa(X, y, T, valid):
     from mvpa.datasets import dataset_wizard
     tstart = datetime.now()
     data = dataset_wizard(X, y)
-    kernel = svm.RbfSVMKernel(gamma = 1./sigma)
+    kernel = svm.RbfSVMKernel(gamma=1. / sigma)
     clf = svm.SVM(C=1., kernel=kernel)
     clf.train(data)
     score = np.mean(clf.predict(T) == valid)
@@ -84,7 +84,6 @@ def bench_pybrain(X, y, T, valid):
     return score, datetime.now() - tstart
 
 
-
 def bench_mdp(X, y, T, valid):
 #
 #       .. MDP ..
@@ -106,10 +105,11 @@ def bench_milk(X, y, T, valid):
     start = datetime.now()
     learner = svm.svm_raw(
         kernel=svm.rbf_kernel(sigma=sigma), C=1.)
-    model = learner.train(X,y)
+    model = learner.train(X, y)
     pred = np.sign(map(model.apply, T))
     score = np.mean(pred == valid)
     return score, datetime.now() - start
+
 
 def bench_orange(X, y, T, valid):
 #
@@ -120,28 +120,28 @@ def bench_orange(X, y, T, valid):
 
     # prepare data in Orange's format
     columns = []
-    for i in range(0,X.shape[1]):
-        columns.append("a" +str(i))
-    [orange.EnumVariable(x) for x in columns]       
-    classValues = ['0','1']   
+    for i in range(0, X.shape[1]):
+        columns.append("a" + str(i))
+    [orange.EnumVariable(x) for x in columns]
+    classValues = ['0', '1']
 
     domain = orange.Domain(map(orange.FloatVariable, columns),
                    orange.EnumVariable("class", values=classValues))
-    y.shape = (len(y),1) #reshape for Orange
-    y[np.where( y < 0)] = 0 # change class labels to 0..K
-    orng_train_data = orange.ExampleTable(domain, np.hstack((X,y)))
+    y.shape = (len(y), 1) #reshape for Orange
+    y[np.where(y < 0)] = 0 # change class labels to 0..K
+    orng_train_data = orange.ExampleTable(domain, np.hstack((X, y)))
 
-    valid.shape = (len(valid),1)  #reshape for Orange
-    valid[np.where( valid < 0)] = 0 # change class labels to 0..K
-    orng_test_data = orange.ExampleTable(domain, np.hstack((T,valid)))
+    valid.shape = (len(valid), 1)  #reshape for Orange
+    valid[np.where(valid < 0)] = 0 # change class labels to 0..K
+    orng_test_data = orange.ExampleTable(domain, np.hstack((T, valid)))
 
     learner = orange.SVMLearner(orng_train_data, \
                                 svm_type=orange.SVMLearner.Nu_SVC, \
-                                kernel_type=orange.SVMLearner.RBF,C=1., \
-                                gamma= 1./sigma )   
+                                kernel_type=orange.SVMLearner.RBF, C=1., \
+                                gamma=1. / sigma)
 
     pred = np.empty(T.shape[0], dtype=np.int32)
-    for i,e in enumerate(orng_test_data):
+    for i, e in enumerate(orng_test_data):
         pred[i] = learner(e)
 
     score = np.mean(pred == valid)
@@ -149,10 +149,12 @@ def bench_orange(X, y, T, valid):
 
 
 if __name__ == '__main__':
-    import sys, misc
+    import sys
+    import misc
 
     # don't bother me with warnings
-    import warnings; warnings.simplefilter('ignore')
+    import warnings
+    warnings.simplefilter('ignore')
     np.seterr(all='ignore')
 
     print __doc__ + '\n'
@@ -206,8 +208,8 @@ if __name__ == '__main__':
     print 'milk: mean %.2f, std %.2f' % (
         np.mean(res_milk), np.std(res_milk))
     print 'Score: %.2f\n' % score
-    
+
     score, res_orange = misc.bench(bench_orange, data)
     print 'Orange: mean %.2f, std %.2f' % (
         np.mean(res_orange), np.std(res_orange))
-    print 'Score: %.2f\n' % score    
+    print 'Score: %.2f\n' % score
