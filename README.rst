@@ -43,7 +43,7 @@ References
   - Shogun: http://www.shogun-toolbox.org/
   - PyBrain : http://pybrain.org/
   - Milk : http://luispedro.org/software/milk
-
+  - Orange : http://orange.biolab.si/
 
 Misc
 ----
