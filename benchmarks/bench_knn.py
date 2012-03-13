@@ -43,7 +43,7 @@ def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
-    from scikits.learn import neighbors
+    from sklearn import neighbors
     start = datetime.now()
     clf = neighbors.NeighborsClassifier(n_neighbors=n_neighbors, algorithm='brute_inplace')
     clf.fit(X, y)

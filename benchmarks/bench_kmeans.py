@@ -47,7 +47,7 @@ def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
-    from scikits.learn import cluster as skl_cluster
+    from sklearn import cluster as skl_cluster
     start = datetime.now()
     clf = skl_cluster.KMeans(k=n_components, n_init=1)
     clf.fit(X)

@@ -10,7 +10,7 @@ def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
-    from scikits.learn import linear_model
+    from sklearn import linear_model
     start = datetime.now()
     clf = linear_model.LogisticRegression()
     clf.fit(X, y)

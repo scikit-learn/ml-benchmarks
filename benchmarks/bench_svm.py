@@ -39,7 +39,7 @@ def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
-    from scikits.learn import svm as skl_svm
+    from sklearn import svm as skl_svm
     start = datetime.now()
     clf = skl_svm.SVC(kernel='rbf', C=1., gamma=1. / sigma)
     clf.fit(X, y)

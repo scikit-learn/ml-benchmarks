@@ -24,7 +24,7 @@ def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
-    from scikits.learn import decomposition
+    from sklearn import decomposition
     start = datetime.now()
     clf = decomposition.RandomizedPCA(n_components=n_components)
     clf.fit(X)

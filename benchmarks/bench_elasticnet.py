@@ -11,7 +11,7 @@ def bench_skl(X, y, T, valid):
 #
 #       .. scikits.learn ..
 #
-    from scikits.learn import linear_model
+    from sklearn import linear_model
     start = datetime.now()
     clf = linear_model.ElasticNet(rho=0.5, alpha=0.5)
     clf.fit(X, y)
