@@ -3,6 +3,13 @@ import numpy as np
 import os
 
 def load_data(dataset):
+    """"
+    Parameters
+    ----------
+
+    dataset : string
+        Which dataset to load. Currently can be "madeon" or "arcene"
+    """
 
     f = open(os.path.dirname(__file__) + '/data/%s_train.data' % dataset)
     X = np.fromfile(f, dtype=np.float64, sep=' ')
