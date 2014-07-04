@@ -19,11 +19,11 @@ def load_data(dataset):
     y = np.fromfile(f, dtype=np.int32, sep=' ')
     f.close()
 
-    f = open(os.path.dirname(__file__) + '/data/%s_valid.data' % dataset)
+    f = open(os.path.dirname(__file__) + '/data/%s_test.data' % dataset)
     T = np.fromfile(f, dtype=np.float64, sep=' ')
     f.close()
 
-    f = open(os.path.dirname(__file__) + '/data/%s_valid.labels' % dataset)
+    f = open(os.path.dirname(__file__) + '/data/%s_test.labels' % dataset)
     valid = np.fromfile(f, dtype=np.float64, sep=' ')
     f.close()
 
